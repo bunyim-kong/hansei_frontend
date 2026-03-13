@@ -5,3 +5,26 @@
     max-width: 1280px;
     margin: auto 0;
 }
+
+.btn {
+    border: 1px solid #9b9c9d;
+    padding: 8px 16px;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #dfe1e3;
+}
+
+.solid_btn {
+    background-color: #2563eb;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.solid_btn:hover {
+    background-color: #1d4ed8;
+}
