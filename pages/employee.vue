@@ -1,14 +1,4 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
-    <!-- Sidebar -->
-    <Aside />
-
-    <!-- Main -->
-    <div class="flex-1 flex flex-col">
-
-      <!-- Topbar -->
-      <Header />
-
       <!-- Content -->
       <main class="p-6">
         <div class="flex justify-between items-center mb-6">
@@ -78,15 +68,9 @@
         </div>
 
       </main>
-
-    </div>
-
-  </div>
 </template>
 
 <script setup>
-import Aside from '~/components/aside.vue'
-import Header from '~/components/header.vue'
 
 const users = [
   {
