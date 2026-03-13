@@ -1,6 +1,6 @@
 <template>
     <aside class="w-64 bg-blue-700 text-white">
-      <div class="px-6 py-6 flex items-center gap-3">
+      <div class="px-6 py-[19px] flex items-center gap-3">
       <!-- Modern geometric icon -->
       <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
         <svg class="w-6 h-6 text-blue-700" fill="currentColor" viewBox="0 0 24 24">
@@ -15,13 +15,13 @@
     </div>
 
 
-      <nav class="mt-6">
-        <NuxtLink to="/dashboard" class="block px-6 py-4 hover:bg-blue-600 font-bold">Dashboard</NuxtLink>
-        <NuxtLink to="/employees" class="block px-6 py-4 bg-blue-600 font-bold">Employees</NuxtLink>
-        <NuxtLink to="/attendance" class="block px-6 py-4 hover:bg-blue-600 font-bold">Attendance</NuxtLink>
-        <NuxtLink to="/roster" class="block px-6 py-4 hover:bg-blue-600 font-bold">Roster</NuxtLink>
-        <NuxtLink to="/leave" class="block px-6 py-4 hover:bg-blue-600 font-bold">Leave</NuxtLink>
-        <NuxtLink to="/reports" class="block px-6 py-4 hover:bg-blue-600 font-bold">Reports</NuxtLink>
+      <nav>
+        <NuxtLink to="/" class="block px-6 py-4 hover:bg-blue-600 font-bold" active-class="bg-blue-600" exact>Dashboard</NuxtLink>
+        <NuxtLink to="/employee" class="block px-6 py-4 hover:bg-blue-600 font-bold" active-class="bg-blue-600" exact>Employees</NuxtLink>
+        <NuxtLink to="/attendance" class="block px-6 py-4 hover:bg-blue-600 font-bold" active-class="bg-blue-600" exact>Attendance</NuxtLink>
+        <NuxtLink to="/roster" class="block px-6 py-4 hover:bg-blue-600 font-bold" active-class="bg-blue-600" exact>Roster</NuxtLink>
+        <NuxtLink to="/leave" class="block px-6 py-4 hover:bg-blue-600 font-bold" active-class="bg-blue-600" exact>Leave</NuxtLink>
+        <NuxtLink to="/reports" class="block px-6 py-4 hover:bg-blue-600 font-bold" active-class="bg-blue-600" exact>Reports</NuxtLink>
       </nav>
     </aside>
 </template>
