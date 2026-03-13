@@ -5,8 +5,6 @@
 
     <!-- Main -->
     <div class="flex-1 flex flex-col">
-
-      <!-- Topbar -->
       <Header />
 
       <!-- Content -->
