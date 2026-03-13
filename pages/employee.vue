@@ -1,13 +1,4 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
-    <!-- Sidebar -->
-    <Aside />
-
-    <!-- Main -->
-    <div class="flex-1 flex flex-col">
-
-      <!-- Topbar -->
-      <Header />
 
       <!-- Content -->
       <main class="p-6">
@@ -79,9 +70,7 @@
 
       </main>
 
-    </div>
 
-  </div>
 </template>
 
 <script setup>
