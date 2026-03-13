@@ -1,114 +1,104 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
-    <!-- Sidebar -->
-    <Aside />
+  <!-- Content -->
+  <main class="p-6">
 
-    <!-- Main -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">Attendance</h1>
 
-      <!-- Topbar -->
-      <Header />
+      <NuxtLink to="/attendance/add" class="solid_btn">
+        Add Attendance
+      </NuxtLink>
+    </div>
 
-      <!-- Content -->
-       <main class="p-6">
+    <!-- Table -->
+    <div class="bg-white rounded-2xl p-4">
 
-        <div class="flex justify-between items-center mb-6">
-          <h1 class="text-2xl font-bold">Attendance</h1>
+      <table class="w-full text-left">
 
-          <NuxtLink to="/attendance/add" class="solid_btn">
-            Add Attendance
-          </NuxtLink>
-        </div>
+        <thead class="border-b border-gray-400">
+          <tr>
+            <th class="p-4">ID</th>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Status</th>
+          </tr>
+        </thead>
 
-        <!-- Table -->
-        <div class="bg-white rounded-2xl p-4">
+        <tbody>
 
-          <table class="w-full text-left">
-            
-            <thead class="border-b border-gray-400">
-              <tr>
-                <th class="p-4">ID</th>
-                <th>Employee</th>
-                <th>Date</th>
-                <th>Check In</th>
-                <th>Check Out</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+          <tr
+            v-for="item in attendance"
+            :key="item.id"
+            class="border-b border-gray-300 hover:bg-gray-50"
+          >
 
-            <tbody>
+            <td class="p-4">{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.date }}</td>
+            <td>{{ item.checkin }}</td>
+            <td>{{ item.checkout }}</td>
 
-              <tr 
-                v-for="item in attendance" 
-                :key="item.id"
-                class="border-b border-gray-300 hover:bg-gray-50"
+            <td>
+              <span
+                :class="item.status == 'Present'
+                ? 'bg-green-100 text-green-700'
+                : 'bg-red-100 text-red-700'"
+                class="px-2 py-1 rounded text-sm"
               >
-                
-                <td class="p-4">{{ item.id }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.checkin }}</td>
-                <td>{{ item.checkout }}</td>
+                {{ item.status }}
+              </span>
+            </td>
 
-                <td>
-                  <span
-                    :class="item.status == 'Present'
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-red-100 text-red-700'"
-                    class="px-2 py-1 rounded text-sm"
-                  >
-                    {{ item.status }}
-                  </span>
-                </td>
+          </tr>
 
-              </tr>
+        </tbody>
 
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </main>
-
+      </table>
 
     </div>
 
-  </div>
+  </main>
 </template>
 
 <script setup>
-import Aside from '~/components/aside.vue'
-import Header from '~/components/header.vue'
 
-const users = [
+import { ref } from "vue"
+
+const attendance = ref([
   {
     id: 1,
     name: "IU",
-    position: "UI Designer",
-    email: "iu@gmail.com",
-    status: "Active",
+    date: "2026-03-13",
+    checkin: "08:00 AM",
+    checkout: "05:00 PM",
+    status: "Present"
   },
   {
     id: 2,
     name: "Kim Jisoo",
-    position: "Frontend Developer",
-    email: "kimjisoo@gmail.com",
-    status: "Active",
+    date: "2026-03-13",
+    checkin: "08:10 AM",
+    checkout: "05:00 PM",
+    status: "Present"
   },
   {
     id: 3,
     name: "Ashley Williams",
-    position: "Backend Developer",
-    email: "ashley@gmail.com",
-    status: "Inactive",
+    date: "2026-03-13",
+    checkin: "-",
+    checkout: "-",
+    status: "Absent"
   },
   {
     id: 4,
     name: "Nick Jackel",
-    position: "Project Manager",
-    email: "nick@gmail.com",
-    status: "Active",
+    date: "2026-03-13",
+    checkin: "08:30 AM",
+    checkout: "05:00 PM",
+    status: "Present"
   }
-]
-</script>
+])
+
+</script> 

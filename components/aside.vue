@@ -17,7 +17,7 @@
 
       <nav class="mt-6">
         <NuxtLink to="/dashboard" class="block px-6 py-4 hover:bg-blue-600 font-bold">Dashboard</NuxtLink>
-        <NuxtLink to="/employees" class="block px-6 py-4 bg-blue-600 font-bold">Employees</NuxtLink>
+        <NuxtLink to="/employee" class="block px-6 py-4 bg-blue-600 font-bold">Employees</NuxtLink>
         <NuxtLink to="/attendance" class="block px-6 py-4 hover:bg-blue-600 font-bold">Attendance</NuxtLink>
         <NuxtLink to="/roster" class="block px-6 py-4 hover:bg-blue-600 font-bold">Roster</NuxtLink>
         <NuxtLink to="/leave" class="block px-6 py-4 hover:bg-blue-600 font-bold">Leave</NuxtLink>
