@@ -1,123 +1,83 @@
 <template>
-  <main class="p-6">
-    <!-- Header & Actions -->
-    <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Dashboard</h1>
-
-      <div class="space-x-2">
-        <NuxtLink
-          to="/leave/request"
-          class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+  <div class="w-full max-w-md">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 transform transition-all hover:scale-[1.02]">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <i class="fas fa-users-cog text-white text-2xl"></i>
+        </div>
+        <h1 class="text-2xl font-bold gradient-text">Workforce Pro</h1>
+        <p class="text-gray-500 mt-2">Attendance & Management System</p>
+      </div>
+      
+      <form @submit.prevent="handleSubmit" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+          <div class="relative">
+            <i class="fas fa-envelope absolute left-3 top-3 text-gray-400"></i>
+            <input 
+              v-model="email" 
+              type="email" 
+              required
+              class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
+              placeholder="admin@company.com or john@company.com"
+            >
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <div class="relative">
+            <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
+            <input 
+              v-model="password" 
+              type="password" 
+              required
+              class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none"
+              placeholder="••••••••"
+            >
+          </div>
+        </div>
+        
+        <div v-if="error" class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+          <p class="text-red-700 text-sm">{{ error }}</p>
+        </div>
+        
+        <button 
+          type="submit" 
+          :disabled="loading"
+          class="w-full bg-linear-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-75 disabled:cursor-wait"
         >
-          New Leave Request
-        </NuxtLink>
-
-        <NuxtLink
-          to="/leave/export"
-          class="inline-block px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          Export Excel
-        </NuxtLink>
+          <span v-if="loading"><i class="fas fa-spinner fa-spin mr-2"></i>Authenticating...</span>
+          <span v-else>Sign In</span>
+        </button>
+      </form>
+      
+      <div class="mt-6 text-center text-sm text-gray-500 space-y-1">
+        <p><strong>Admin:</strong> admin@company.com / password</p>
+        <p><strong>Employee:</strong> john@company.com / password</p>
       </div>
     </div>
-
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-4 gap-4 mb-6">
-      <div v-for="summery in summaries" :key="summery.title" class="bg-white rounded-2xl p-4">
-        <p class="text-sm text-gray-500">{{ summery.title }}</p>
-        <p class="text-3xl font-bold text-yellow-600">{{ summery.count }}</p>
-      </div>
-    </div>
-
-    <!-- Table -->
-    <div class="bg-white rounded-2xl p-4 overflow-x-auto">
-      <table class="w-full text-left min-w-[800px]">
-        <thead class="border-b border-gray-400">
-          <tr>
-            <th class="p-4">ID</th>
-            <th>Name</th>
-            <th>Module</th>
-            <th>Status</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr
-            v-for="log in logs" :key="log.id"
-            class="border-b border-gray-400 hover:bg-gray-50"
-          >
-            <td class="p-4 py-5">{{ log.id }}</td>
-            <td class="font-medium">{{ log.name }}</td>
-            <td>{{ log.module }}</td>
-            <td>{{ log.status }}</td>
-            <td>{{ log.time }}</td>
-            <td class="max-w-xs truncate"></td>
-            <td>
-              
-            </td>
-
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
+  </div>
 </template>
 
 <script setup>
-// Props: pass summary and logs from parent if needed
-const props = defineProps({
-  summaries: {
-    type: Array,
-    default: () => [
-      { title: 'Total Staff', count: 12 },
-      { title: 'In Office', count: 8 },
-      { title: 'On Leave', count: 2 },
-      { title: 'Roster Tasks', count: 5 }
-    ]
-  },
-  logs: {
-    type: Array,
-    default: () => [
-      { 
-        id: 1, 
-        name: 'Sok Dara', 
-        module: 'Attendance', 
-        status: 'In', 
-        statusColor: 'bg-green-100 text-green-700', 
-        time: '08:02 AM' 
-      },
-      { 
-        id: 2, 
-        name: 'Chan Ty', 
-        module: 'Leave Mgt', 
-        status: 'Pending', 
-        statusColor: 'bg-orange-100 text-orange-700', 
-        time: '09:15 AM' 
-      },
-      { 
-        id: 3, 
-        name: 'Keo Roth', 
-        module: 'Roster', 
-        status: 'Assigned', 
-        statusColor: 'bg-blue-100 text-blue-700', 
-        time: '10:00 AM' 
-      }
-    ]
-  }
-})
+definePageMeta({ layout: 'auth' })
 
-// Helper to get the class for a status badge
-const getStatusClass = (status) => {
-  switch (status) {
-    case 'In': return 'bg-green-100 text-green-700'
-    case 'Pending': return 'bg-orange-100 text-orange-700'
-    case 'Assigned': return 'bg-blue-100 text-blue-700'
-    default: return 'bg-gray-100 text-gray-700'
+const { login } = useAuth()
+const email = ref('')
+const password = ref('')
+const loading = ref(false)
+const error = ref('')
+
+const handleSubmit = async () => {
+  loading.value = true
+  error.value = ''
+  try {
+    await login(email.value, password.value)
+  } catch (e) {
+    error.value = e.message
+  } finally {
+    loading.value = false
   }
 }
-
-// Example actions for leave requests
-const approveLeave = (id) => alert(`Approved leave ID ${id}`)
-const rejectLeave = (id) => alert(`Rejected leave ID ${id}`)
 </script>
