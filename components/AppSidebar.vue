@@ -6,7 +6,7 @@
           <i class="fas fa-users-cog text-white"></i>
         </div>
         <div>
-          <h2 class="font-bold text-gray-800">Workforce Pro</h2>
+          <h2 class="font-bold text-gray-800">Hansei Electronics</h2>
           <p class="text-xs text-gray-500">Management System</p>
         </div>
       </div>
@@ -43,11 +43,11 @@ const route = useRoute()
 
 const menuItems = [
   { id: 'dashboard', label: 'Dashboard', icon: 'fas fa-home', path: '/dashboard' },
-  { id: 'attendance', label: 'Attendance', icon: 'fas fa-clock', path: '/attendance' },
-  { id: 'roster', label: 'My Schedule', icon: 'fas fa-calendar-alt', path: '/roster' },
-  { id: 'leave', label: 'Leave', icon: 'fas fa-umbrella-beach', path: '/leave' },
-  { id: 'salary', label: 'Payslip', icon: 'fas fa-file-invoice-dollar', path: '/salary' },
   { id: 'employees', label: 'Employees', icon: 'fas fa-users', path: '/employees', adminOnly: true },
+  { id: 'attendance', label: 'Attendance', icon: 'fas fa-clock', path: '/attendance' },
+  { id: 'roster', label: 'Roster', icon: 'fas fa-calendar-alt', path: '/roster' },
+  { id: 'leave', label: 'Leave', icon: 'fas fa-umbrella-beach', path: '/leave' },
+  { id: 'salary', label: 'Report', icon: 'fas fa-file-invoice-dollar', path: '/salary' },
 ]
 
 const visibleMenuItems = computed(() => {
