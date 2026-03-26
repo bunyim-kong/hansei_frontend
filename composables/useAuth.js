@@ -3,6 +3,7 @@ export const useAuth = () => {
   const user = useState('user', () => ({}))
   const users = useState('users', () => [
     { email: 'admin@company.com', password: 'password', role: 'Administrator', name: 'Hoyoss Admin', firstName: 'Hoyoss' },
+    { email: 'veasna@company.com', password: 'password', role: 'Administrator', name: 'Veasna Admin', firstName: 'Hoyoss' },
     { email: 'john@company.com', password: 'password', role: 'Employee', name: 'John Smith', firstName: 'John' }
   ])
 
