@@ -55,29 +55,6 @@
             <h2 class="text-2xl sm:text-3xl font-bold mb-2">Welcome back, {{ user.firstName }}</h2>
             <p class="text-blue-100 opacity-90">{{ currentTime }} • {{ currentDate }}</p>
           </div>
-          <div class="text-right">
-            <p class="text-sm text-blue-100 mb-2">Your Status</p>
-            <span :class="`px-5 py-2 rounded-full text-sm font-bold ${checkedIn ? 'bg-green-500' : 'bg-orange-500'}`">
-              {{ checkedIn ? 'Checked In' : 'Not Checked In' }}
-            </span>
-          </div>
-        </div>
-        
-        <div class="mt-6 flex flex-col sm:flex-row gap-4">
-          <button 
-            @click="checkIn" 
-            :disabled="checkedIn"
-            class="flex-1 bg-white text-blue-600 py-4 rounded-xl font-bold hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]"
-          >
-            <i class="fas fa-sign-in-alt mr-2"></i> Check In
-          </button>
-          <button 
-            @click="checkOut" 
-            :disabled="!checkedIn"
-            class="flex-1 bg-blue-800 text-white py-4 rounded-xl font-bold hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02]"
-          >
-            <i class="fas fa-sign-out-alt mr-2"></i> Check Out
-          </button>
         </div>
       </div>
 

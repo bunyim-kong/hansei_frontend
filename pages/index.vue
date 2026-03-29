@@ -14,7 +14,7 @@
       <!-- Tabs -->
       <div class="flex justify-center mb-6 gap-6">
         <button
-          @click="mode='login'"
+          @click="switchMode('login')"
           :class="mode==='login'
           ? 'font-semibold border-b-2 border-blue-600 pb-1'
           : 'text-gray-400'"
@@ -23,7 +23,7 @@
         </button>
 
         <button
-          @click="mode='signup'"
+          @click="switchMode('signup')"
           :class="mode==='signup'
           ? 'font-semibold border-b-2 border-blue-600 pb-1'
           : 'text-gray-400'"
@@ -40,22 +40,14 @@
 
           <div>
             <label class="text-sm text-gray-600">Email</label>
-            <input
-              v-model="email"
-              type="email"
-              required
-              placeholder="you@example.com"
+            <input v-model="email" type="email" required
               class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
             >
           </div>
 
           <div>
             <label class="text-sm text-gray-600">Password</label>
-            <input
-              v-model="password"
-              type="password"
-              required
-              placeholder="••••••••"
+            <input v-model="password" type="password" required
               class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
             >
           </div>
@@ -67,78 +59,58 @@
 
           <div class="col-span-2">
             <label class="text-sm text-gray-600">Full Name</label>
-            <input
-              v-model="fullName"
-              type="text"
-              required
-              placeholder="John Smith"
+            <input v-model="fullName" type="text" required
               class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
             >
           </div>
 
           <div class="col-span-2">
             <label class="text-sm text-gray-600">Email</label>
-            <input
-              v-model="email"
-              type="email"
-              required
-              placeholder="you@example.com"
+            <input v-model="email" type="email" required
               class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
             >
           </div>
 
           <div>
             <label class="text-sm text-gray-600">Password</label>
-            <input
-              v-model="password"
-              type="password"
-              required
-              placeholder="••••••••"
+            <input v-model="password" type="password" required
               class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
             >
           </div>
 
           <div>
             <label class="text-sm text-gray-600">Confirm Password</label>
-            <input
-              v-model="confirmPassword"
-              type="password"
-              required
-              placeholder="••••••••"
+            <input v-model="confirmPassword" type="password" required
               class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
             >
           </div>
 
         </div>
 
-        <!-- ROLE SELECT -->
+        <!-- ROLE -->
         <div v-if="mode==='signup'">
           <label class="text-sm text-gray-600">Select Role</label>
 
           <div class="grid grid-cols-2 gap-3 mt-2">
 
-            <!-- ADMIN -->
             <div
-              @click="role='Admin'"
-              :class="role==='Admin'
+              @click="role='Administrator'"
+              :class="role==='Administrator'
               ? 'border-blue-600 bg-blue-50'
               : 'border-gray-200'"
-              class="cursor-pointer border rounded-lg p-3 text-center hover:border-blue-400 transition"
+              class="cursor-pointer border rounded-lg p-3 text-center"
             >
-              <i class="fas fa-user-shield text-blue-600 text-lg"></i>
-              <p class="text-sm font-medium mt-1">Admin</p>
+              Admin
             </div>
 
-            <!-- EMPLOYEE -->
             <div
               @click="role='Employee'"
               :class="role==='Employee'
               ? 'border-blue-600 bg-blue-50'
               : 'border-gray-200'"
-              class="cursor-pointer border rounded-lg p-3 text-center hover:border-blue-400 transition"
+              class="cursor-pointer border rounded-lg p-3 text-center"
             >
-              <i class="fas fa-user text-blue-600 text-lg"></i>
-              <p class="text-sm font-medium mt-1">Employee</p>
+              Employee
             </div>
 
           </div>
@@ -153,18 +125,12 @@
         <button
           type="submit"
           :disabled="loading"
-          class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition"
+          class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold"
         >
-
-          <span v-if="loading">
-            <i class="fas fa-spinner fa-spin mr-2"></i>
-            Processing...
-          </span>
-
+          <span v-if="loading">Processing...</span>
           <span v-else>
             {{ mode === 'login' ? 'Login' : 'Create Account' }}
           </span>
-
         </button>
 
       </form>
@@ -176,9 +142,7 @@
 <script setup>
 definePageMeta({ layout: 'auth' })
 
-import { useAuth } from '~/composables/useAuth'
-
-const { login, signup } = useAuth()
+const { login, signup, isAuthenticated } = useAuth()
 
 const mode = ref('login')
 
@@ -191,19 +155,33 @@ const role = ref('Employee')
 const loading = ref(false)
 const error = ref('')
 
-const handleSubmit = async () => {
+// ✅ Redirect if already logged in
+onMounted(() => {
+  if (isAuthenticated.value) {
+    navigateTo('/dashboard')
+  }
+})
 
+// ✅ Switch tab cleanly
+const switchMode = (value) => {
+  mode.value = value
+  error.value = ''
+
+  fullName.value = ''
+  email.value = ''
+  password.value = ''
+  confirmPassword.value = ''
+}
+
+// ✅ Submit
+const handleSubmit = async () => {
   loading.value = true
   error.value = ''
 
   try {
-
     if (mode.value === 'login') {
-
       await login(email.value, password.value)
-
     } else {
-
       if (password.value !== confirmPassword.value) {
         throw new Error('Passwords do not match')
       }
@@ -214,13 +192,9 @@ const handleSubmit = async () => {
         fullName.value,
         role.value
       )
-
     }
-
   } catch (e) {
-
     error.value = e.message
-
   }
 
   loading.value = false

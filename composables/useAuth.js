@@ -1,51 +1,90 @@
+import axios from 'axios'
+
 export const useAuth = () => {
   const isAuthenticated = useState('isAuthenticated', () => false)
   const user = useState('user', () => ({}))
-  const users = useState('users', () => [
-    { email: 'admin@company.com', password: 'password', role: 'Administrator', name: 'Hoyoss Admin', firstName: 'Hoyoss' },
-    { email: 'john@company.com', password: 'password', role: 'Employee', name: 'John Smith', firstName: 'John' }
-  ])
+
+  // ✅ Cookie (SSR safe)
+  const token = useCookie('token')
 
   const isAdmin = computed(() => user.value.role === 'Administrator')
 
+  // ===== LOGIN =====
   const login = async (email, password) => {
-    await new Promise(r => setTimeout(r, 500))
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/login', {
+        email,
+        password
+      })
 
-    const found = users.value.find(u => u.email === email && u.password === password)
-    if (!found) throw new Error('Invalid email or password')
+      token.value = response.data.token
+      user.value = response.data.user
+      isAuthenticated.value = true
 
-    user.value = { ...found }
-    isAuthenticated.value = true
-    return navigateTo('/dashboard')
+      return navigateTo('/dashboard')
+
+    } catch (err) {
+      console.error(err.response?.data)
+      throw new Error(err.response?.data?.message ?? 'Login failed')
+    }
   }
 
+  // ===== SIGNUP =====
   const signup = async (email, password, fullName, role) => {
-    await new Promise(r => setTimeout(r, 500))
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/register', {
+        name: fullName,
+        email,
+        password,
+        password_confirmation: password, // ✅ IMPORTANT FIX
+        role: role ?? 'Employee'
+      })
 
-    if (users.value.some(u => u.email === email)) {
-      throw new Error('Email already registered')
+      token.value = response.data.token
+      user.value = response.data.user
+      isAuthenticated.value = true
+
+      return navigateTo('/dashboard')
+
+    } catch (err) {
+      console.error(err.response?.data)
+      throw new Error(err.response?.data?.message ?? 'Registration failed')
     }
-
-    // Default to Employee if role is Administrator but user is not admin
-    if (role === 'Administrator' && (!user.value || user.value.role !== 'Administrator')) {
-      role = 'Employee'
-    }
-
-    const firstName = fullName.split(' ')[0] || fullName
-    const newUser = { email, password, role, name: fullName, firstName }
-    users.value.push(newUser)
-
-    // Auto-login after signup
-    user.value = { ...newUser }
-    isAuthenticated.value = true
-    return navigateTo('/dashboard')
   }
 
-  const logout = () => {
-    isAuthenticated.value = false
-    user.value = {}
-    return navigateTo('/')
+  // ===== LOGOUT =====
+  const logout = async () => {
+    try {
+      await axios.post('http://127.0.0.1:8000/api/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${token.value}`
+        }
+      })
+    } catch (err) {
+      console.error(err)
+    } finally {
+      token.value = null
+      user.value = {}
+      isAuthenticated.value = false
+      navigateTo('/')
+    }
   }
 
-  return { isAuthenticated, user, isAdmin, users, login, signup, logout }
+  // ===== RESTORE =====
+  const restoreSession = () => {
+    if (token.value) {
+      isAuthenticated.value = true
+    }
+  }
+
+  return {
+    isAuthenticated,
+    user,
+    token,
+    isAdmin,
+    login,
+    signup,
+    logout,
+    restoreSession,
+  }
 }
